@@ -11,15 +11,13 @@ public class Main {
         private byte[] buffer;
         private int bufferPointer, bytesRead;
 
-        public Reader()
-        {
+        public Reader() {
             din = new DataInputStream(System.in);
             buffer = new byte[BUFFER_SIZE];
             bufferPointer = bytesRead = 0;
         }
 
-        public Reader(String file_name) throws IOException
-        {
+        public Reader(String file_name) throws IOException {
             din = new DataInputStream(
                     new FileInputStream(file_name));
             buffer = new byte[BUFFER_SIZE];
@@ -27,8 +25,7 @@ public class Main {
         }
 
 
-        public int nextInt() throws IOException
-        {
+        public int nextInt() throws IOException {
             int ret = 0;
             byte c = read();
             while (c <= ' ') {
@@ -42,24 +39,45 @@ public class Main {
         }
 
 
-        private void fillBuffer() throws IOException
-        {
+        private void fillBuffer() throws IOException {
             bytesRead = din.read(buffer, bufferPointer = 0,
                     BUFFER_SIZE);
             if (bytesRead == -1)
                 buffer[0] = -1;
         }
 
-        private byte read() throws IOException
-        {
+        private byte read() throws IOException {
             if (bufferPointer == bytesRead)
                 fillBuffer();
             return buffer[bufferPointer++];
         }
     }
 
-    public static void main(String[] args) {
-	// write your code here
-        System.out.println("Hello World");
+    public static void main(String[] args) throws IOException {
+        // write your code here
+        Reader reader = new Reader("datasets/pub01.in");
+        int numNodes = reader.nextInt();
+        int numEdges = reader.nextInt();
+        int numNodesPack = reader.nextInt();
+        int numEdgesPack = reader.nextInt();
+
+        Node[] graph = new Node[numNodes];
+        for (int i = 0; i < numNodes; i++) {
+            graph[i] = new Node(i);
+        }
+
+        for (int i = 0; i < numEdges; i++) {
+            int source = reader.nextInt();
+            int destination = reader.nextInt();
+            graph[source].neighbours.add(graph[destination]);
+            graph[destination].neighbours.add(graph[source]);
+        }
+
+        Alg alg = new Alg(graph,numNodesPack,numEdgesPack);
+        alg.calculateSub();
+
+
+        System.out.println("DONE");
+
     }
 }
