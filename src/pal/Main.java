@@ -55,7 +55,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // write your code here
-        Reader reader = new Reader("datasets/pub01.in");
+        Reader reader = new Reader("datasets/pub02.in");
         int numNodes = reader.nextInt();
         int numEdges = reader.nextInt();
         int numNodesPack = reader.nextInt();

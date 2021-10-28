@@ -7,7 +7,6 @@ import java.util.HashMap;
 public class Alg {
     Node[] graph;
     ArrayList<Node[]> subGraphs;
-    ArrayList<Pack> packs;
 
     int numNodesPack;
     int numEdgesPack;
@@ -17,7 +16,6 @@ public class Alg {
         this.subGraphs = new ArrayList<>();
         this.numNodesPack = numNodesPack;
         this.numEdgesPack = numEdgesPack;
-        this.packs = new ArrayList<>();
     }
 
     public void calculateSub() {
@@ -44,7 +42,6 @@ public class Alg {
 
     public void createSubGraph(Node[] nodes) {
         Node[] copy = new Node[nodes.length];
-        Pack pack = new Pack();
         int discoveredRoutes = 0;
         for (int i = 0; i < nodes.length; i++) {
             copy[i] = nodes[i];
@@ -53,17 +50,14 @@ public class Alg {
                 if (copy[i].neighbours.contains(nn))
                 {
                     discoveredRoutes++;
-                    copy[i].interMediateDegree++;
                 }
 
             }
-            pack.nodes.put(copy[i],copy[i].interMediateDegree);
-            copy[i].interMediateDegree=0;
+
         }
         if (discoveredRoutes / 2 == numEdgesPack)
         {
             subGraphs.add(copy);
-            packs.add(pack);
         }
 
     }
@@ -75,19 +69,13 @@ public class Alg {
                 Node[] subgraph1 = subGraphs.get(i);
                 Node[] subgraph2 = subGraphs.get(j);
                 if (checkIso(subgraph1, subgraph2)) {
-                    for (Node n:subgraph2) {
-                        System.out.print(n.index+" ");
-                    }
-                    for (Node n:subgraph1) {
-                        System.out.print(n.index+" ");
-                    }
-                    System.out.println();
+                    totalNumber++;
                 }
             }
 
 
         }
-        //System.out.println(totalNumber);
+        System.out.println(totalNumber);
     }
 
     public boolean checkIso(Node[] graph1, Node[] graph2) {
