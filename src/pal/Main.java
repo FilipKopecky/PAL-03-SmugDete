@@ -75,6 +75,7 @@ public class Main {
 
         Alg alg = new Alg(graph,numNodesPack,numEdgesPack);
         alg.calculateSub();
+        alg.getIsomorphisms();
 
 
         System.out.println("DONE");
