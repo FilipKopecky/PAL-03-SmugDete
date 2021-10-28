@@ -20,7 +20,7 @@ public class Alg {
 
     public void calculateSub() {
         kSubset(graph, graph.length - 1, new Node[numNodesPack], numNodesPack - 1);
-       /**    for (Node[]subgraph:subGraphs) {
+       /**     for (Node[]subgraph:subGraphs) {
          for (Node n:subgraph) {
          System.out.print(n.index +",");
          }
@@ -42,34 +42,49 @@ public class Alg {
 
     public void createSubGraph(Node[] nodes) {
         Node[] copy = new Node[nodes.length];
+        Node[] pack = new Node[nodes.length];
         int discoveredRoutes = 0;
+        ArrayList<Node> interNeighbours;
         for (int i = 0; i < nodes.length; i++) {
             copy[i] = nodes[i];
-
+            interNeighbours = new ArrayList<>();
             for (Node nn : nodes) {
-                if (copy[i].neighbours.contains(nn))
-                {
+                if (copy[i].neighbours.contains(nn)) {
                     discoveredRoutes++;
+                    interNeighbours.add(nn);
                 }
 
             }
-
+            Node node = new Node(copy[i].index);
+            node.neighbours = interNeighbours;
+            if(node.neighbours.size()==0)
+            {
+               return;
+            }
+            pack[i] = node;
         }
-        if (discoveredRoutes / 2 == numEdgesPack)
-        {
-            subGraphs.add(copy);
+        if (discoveredRoutes / 2 == numEdgesPack) {
+
+            subGraphs.add(pack);
         }
 
     }
 
     public void getIsomorphisms() {
-        int totalNumber=0;
+        int totalNumber = 0;
         for (int i = 0; i < subGraphs.size(); i++) {
             for (int j = i + 1; j < subGraphs.size(); j++) {
                 Node[] subgraph1 = subGraphs.get(i);
                 Node[] subgraph2 = subGraphs.get(j);
                 if (checkIso(subgraph1, subgraph2)) {
                     totalNumber++;
+                 /**   for (Node n:subgraph1) {
+                        System.out.print(n.index+" ");
+                    }
+                    for (Node n:subgraph2) {
+                        System.out.print(n.index+" ");
+                    }
+                    System.out.println();**/
                 }
             }
 
@@ -81,11 +96,33 @@ public class Alg {
     public boolean checkIso(Node[] graph1, Node[] graph2) {
         for (int i = numNodesPack - 1; i >= 0; i--) {
             for (int j = numNodesPack - 1; j >= 0; j--) {
-                if (graph1[j] == graph2[i])
+                if (graph1[j].index == graph2[i].index)
                     return false;
             }
         }
+
+        ArrayList<Integer> degrees1 = new ArrayList<>();
+        ArrayList<Integer> degrees2 = new ArrayList<>();
+
+        for (Node n:graph1) {
+            degrees1.add(n.neighbours.size());
+        }
+        for (Node n:graph2) {
+            degrees2.add(n.neighbours.size());
+        }
+
+        Collections.sort(degrees1);
+        Collections.sort(degrees2);
+
+        for (int i = 0; i < numNodesPack; i++) {
+            if(degrees1.get(i)!=degrees2.get(i))
+                return false;
+        }
+
+
+
         
+
 
 
         return true;
