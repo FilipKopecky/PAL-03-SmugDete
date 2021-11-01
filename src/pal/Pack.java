@@ -2,11 +2,14 @@ package pal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.PriorityQueue;
 
 public class Pack {
-    HashMap<Node,Integer> nodes;
-    public Pack()
-    {
-        nodes=new HashMap<>();
+    Node[] nodes;
+
+    public Pack(int size) {
+        nodes = new Node[size];
     }
+
 }
+
