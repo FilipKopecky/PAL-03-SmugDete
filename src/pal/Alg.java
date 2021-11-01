@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 public class Alg {
     Node[] graph;
-    ArrayList<Node[]> subGraphs;
     ArrayList<Pack> packs;
 
     int numNodesPack;
@@ -15,7 +14,6 @@ public class Alg {
 
     public Alg(Node[] graph, int numNodesPack, int numEdgesPack) {
         this.graph = graph;
-        this.subGraphs = new ArrayList<>();
         this.numNodesPack = numNodesPack;
         this.numEdgesPack = numEdgesPack;
 
@@ -24,17 +22,34 @@ public class Alg {
     }
 
     public void calculateSub() {
-        kSubset(graph, graph.length - 1, new Node[numNodesPack], numNodesPack - 1);
+        /**  kSubset(graph, graph.length - 1, new Node[numNodesPack], numNodesPack - 1);
+
+         for (Pack pack:packs) {
+         for (Node n: pack.nodes) {
+         System.out.print(n.index+" ");
+         }
+         System.out.println();
+         }**/
+        kSubset2(graph, 0, new Node[numNodesPack], 0);
+
+       /** for (Pack pack : packs) {
+            for (Node n : pack.nodes) {
+                System.out.print(n.index + " ");
+            }
+            System.out.println();
+        }**/
+
     }
 
-    public void kSubset(Node[] set, int i_end, Node[] result, int remainingDepth) {
-        if (remainingDepth < 0) {
+
+    public void kSubset2(Node[] set, int i_end, Node[] result, int currentIndex) {
+        if (currentIndex == numNodesPack) {
             createSubGraph(result);
             return;
         }
-        for (int i = i_end; i > remainingDepth - 1; i--) {
-            result[remainingDepth] = set[i];
-            kSubset(set, i - 1, result, remainingDepth - 1);
+        for (int i = i_end; i < graph.length; i++) {
+            result[currentIndex] = set[i];
+            kSubset2(set, i + 1, result, currentIndex + 1);
         }
 
     }
@@ -60,22 +75,25 @@ public class Alg {
     }
 
     public void getIsomorphismsPacks() {
-        int totalNumber = 0;
+       // int totalNumber = 0;
         for (int i = 0; i < packs.size(); i++) {
             for (int j = i + 1; j < packs.size(); j++) {
                 Pack p1 = packs.get(i);
                 Pack p2 = packs.get(j);
-                if (checkIso(p2, p1)) {
-                    totalNumber++;
-                    for (Node n : p1.nodes) {
-                        System.out.print(n.index + " ");
+                if (checkIso(p1, p2)) {
+                    //totalNumber++;
+                    for (int k = 0; k < numNodesPack; k++) {
+                        StringBuilder sb = new StringBuilder(String.valueOf(p1.nodes[k].index));
+                        System.out.print(sb.append(" "));
                     }
-                    for (Node n : p2.nodes) {
-                        System.out.print(n.index + " ");
+                    for (int k = 0; k < numNodesPack -1; k++) {
+                        StringBuilder sb = new StringBuilder(String.valueOf(p2.nodes[k].index));
+                        System.out.print(sb.append(" "));
                     }
+                      System.out.print(p2.nodes[numNodesPack-1].index);
 
 
-                    System.out.println();
+                     System.out.println();
 
 
                 }
@@ -83,7 +101,7 @@ public class Alg {
 
 
         }
-        System.out.println(totalNumber);
+       // System.out.println(totalNumber);
     }
 
 
@@ -104,8 +122,8 @@ public class Alg {
     }
 
     public boolean checkIso(Pack pack1, Pack pack2) {
-        for (int i = numNodesPack - 1; i >= 0; i--) {
-            for (int j = numNodesPack - 1; j >= 0; j--) {
+        for (int i = 0; i < numNodesPack; i++) {
+            for (int j = 0; j < numNodesPack; j++) {
                 if (pack1.nodes[j].index == pack2.nodes[i].index)
                     return false;
             }
