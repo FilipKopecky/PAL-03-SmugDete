@@ -25,12 +25,6 @@ public class Alg {
 
     public void calculateSub() {
         kSubset(graph, graph.length - 1, new Node[numNodesPack], numNodesPack - 1);
-        /**     for (Node[]subgraph:subGraphs) {
-         for (Node n:subgraph) {
-         System.out.print(n.index +",");
-         }
-         System.out.println();
-         }**/
     }
 
     public void kSubset(Node[] set, int i_end, Node[] result, int remainingDepth) {
@@ -69,8 +63,21 @@ public class Alg {
         int totalNumber = 0;
         for (int i = 0; i < packs.size(); i++) {
             for (int j = i + 1; j < packs.size(); j++) {
-                if (checkIso(packs.get(i), packs.get(j))) {
+                Pack p1 = packs.get(i);
+                Pack p2 = packs.get(j);
+                if (checkIso(p2, p1)) {
                     totalNumber++;
+                    for (Node n : p1.nodes) {
+                        System.out.print(n.index + " ");
+                    }
+                    for (Node n : p2.nodes) {
+                        System.out.print(n.index + " ");
+                    }
+
+
+                    System.out.println();
+
+
                 }
             }
 
@@ -80,44 +87,6 @@ public class Alg {
     }
 
 
-    /**
-     * public void getIsomorphisms() {
-     * int totalNumber = 0;
-     * for (int i = 0; i < subGraphs.size(); i++) {
-     * for (int j = i + 1; j < subGraphs.size(); j++) {
-     * Node[] subgraph1 = subGraphs.get(i);
-     * Node[] subgraph2 = subGraphs.get(j);
-     * if (checkIso(subgraph1, subgraph2)) {
-     * totalNumber++;
-     * <p>
-     * <p>
-     * if (subgraph1[0].index < subgraph2[0].index) {
-     * for (Node n : subgraph1) {
-     * System.out.print(n.index + " ");
-     * }
-     * for (Node n : subgraph2) {
-     * System.out.print(n.index + " ");
-     * }
-     * System.out.println();
-     * } else {
-     * for (Node n : subgraph2) {
-     * System.out.print(n.index + " ");
-     * }
-     * for (Node n : subgraph1) {
-     * System.out.print(n.index + " ");
-     * }
-     * System.out.println();
-     * }
-     * <p>
-     * <p>
-     * }
-     * }
-     * <p>
-     * <p>
-     * }
-     * System.out.println(totalNumber);
-     * }
-     **/
     public int degreeInPack(Node[] pack, Node n) {
         int degree = 0;
         for (Node node : pack) {
@@ -143,8 +112,7 @@ public class Alg {
         }
 
 
-        HashMap<Integer,ArrayList<ArrayList<Integer>>> graph1 = new HashMap<>();
-        HashMap<Integer,ArrayList<ArrayList<Integer>>> graph2 = new HashMap<>();
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> graph1 = new HashMap<>();
 
         for (Node n : pack1.nodes) {
             Integer nodeDegree = n.degrees.get(pack1);
@@ -157,11 +125,11 @@ public class Alg {
             Collections.sort(degrees);
 
             ArrayList<ArrayList<Integer>> gDeg = graph1.get(nodeDegree);
-            if(gDeg==null)
-                graph1.put(nodeDegree,new ArrayList<>());
+            if (gDeg == null)
+                graph1.put(nodeDegree, new ArrayList<>());
             gDeg = graph1.get(nodeDegree);
             gDeg.add(degrees);
-            graph1.put(nodeDegree,gDeg);
+            graph1.put(nodeDegree, gDeg);
 
         }
 
@@ -174,24 +142,21 @@ public class Alg {
                 }
             }
             Collections.sort(degrees);
-            //Start deleting here! If wqe use HashMap it will be easier, just fetch all neighbours for each degree and then look for match, if so delete it
+
 
             ArrayList<ArrayList<Integer>> gDeg = graph1.get(nodeDegree);
-            if(gDeg==null) return false;
+            if (gDeg == null) return false;
             boolean removed = false;
             for (int i = gDeg.size() - 1; i >= 0; i--) {
-                if(gDeg.get(i).equals(degrees))
-                {
+                if (gDeg.get(i).equals(degrees)) {
                     gDeg.remove(i);
                     removed = true;
                     break;
                 }
             }
-            if(!removed) return false;
+            if (!removed) return false;
 
         }
-
-
 
 
         return true;

@@ -78,7 +78,7 @@ public class Main {
        // alg.getIsomorphisms();
         alg.getIsomorphismsPacks();
 
-        System.out.println("DONE");
+
 
     }
 }
