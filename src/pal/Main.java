@@ -55,7 +55,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         // write your code here
-        Reader reader = new Reader("datasets/pub02.in");
+        Reader reader = new Reader();
         int numNodes = reader.nextInt();
         int numEdges = reader.nextInt();
         int numNodesPack = reader.nextInt();
@@ -75,10 +75,10 @@ public class Main {
 
         Alg alg = new Alg(graph,numNodesPack,numEdgesPack);
         alg.calculateSub();
-        alg.getIsomorphisms();
+       // alg.getIsomorphisms();
+        alg.getIsomorphismsPacks();
 
 
-        System.out.println("DONE");
 
     }
 }

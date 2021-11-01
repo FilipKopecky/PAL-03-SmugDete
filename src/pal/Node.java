@@ -1,15 +1,17 @@
 package pal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Node {
     int index;
     ArrayList<Node> neighbours;
-    int interMediateDegree;
+    HashMap<Pack,Integer> degrees;
 
     public Node(int index) {
         this.index = index;
         neighbours = new ArrayList<>();
-        this.interMediateDegree=0;
+        degrees = new HashMap<>();
+
     }
 }
